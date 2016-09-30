@@ -1,2 +1,28 @@
-index
+
+<div style="background-color: #fff">
 <%= req.user ? req.user.username : '' %>
+</div>
+
+<br>
+
+<div style="background-color: #fff">
+  <% books.forEach(function(book) {  %>
+  <a href="<%= book.link() %>">
+    <%= book.title %>
+  </a>
+  <br>
+  <% }); %>
+</div>
+
+
+<br>
+
+<div style="background-color: #fff">
+  <% for (var i = 1; i <= pages; i++) {  %>
+  <a href="/?page=<%= i %>">
+    <%= i %>
+  </a>
+  <% } %>
+</div>
+
+
