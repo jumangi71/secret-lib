@@ -8,7 +8,8 @@
 module.exports = {
   attributes: {
     external_id: {
-      type: 'integer'
+      type: 'integer',
+      unique: true
     },
     username: {
       type: 'string'

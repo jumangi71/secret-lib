@@ -1,5 +1,6 @@
 
 var request = require('request');
+var _ = require("lodash");
 
 module.exports = {
   _getUsers: function(opts, done) {
@@ -9,7 +10,7 @@ module.exports = {
           headers: {
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            'Cookie': 'ruid=URNdEVal9Qmew80vCcSxAgB=; _ym_uid=1461154236116470001; __utma=169010082.2083082252.1453716795.1473431801.1473855315.20; __utmc=169010082; __utmz=169010082.1473165565.17.11.utmcsr=rcorpfb|utmccn=gevork-sarkisyan--soosnovatel-kompanii|utmcmd=social; csrftoken=UDzMteyChiEMM7AAxaToxl1nLkU9GPro; sessionid=y1chorzmcxc2zotsr935ajxhkme8kvb9; dv=8sUfHhpMgJJmA5kgRHATJ46eKHy588I:1475147881; _ga=GA1.2.2083082252.1453716795; _gat=1'
+            'Cookie': 'ruid=URNdEVal9Qmew80vCcSxAgB=; _ym_uid=1461154236116470001; __utma=169010082.2083082252.1453716795.1473431801.1473855315.20; __utmc=169010082; __utmz=169010082.1473165565.17.11.utmcsr=rcorpfb|utmccn=gevork-sarkisyan--soosnovatel-kompanii|utmcmd=social; csrftoken=UDzMteyChiEMM7AAxaToxl1nLkU9GPro; sessionid=y1chorzmcxc2zotsr935ajxhkme8kvb9; dv=+WKPjw0mQEkzAcyQIjgJk8dPFD5c+eE:1475253414; _ga=GA1.2.2083082252.1453716795; _gat=1'
           }
       },
       function(error, response, body) {

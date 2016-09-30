@@ -28,6 +28,23 @@ module.exports.policies = {
 
   // '*': true,
 
+  BookController: {
+    'destroy': 'isAdmin',
+    'create': 'isAdmin',
+    'add': 'isAdmin',
+    'update': 'isAdmin'
+  },
+
+  UserController: {
+    'delete': 'isAdmin'
+  },
+
+  RoleController: {
+    'delete': 'isAdmin',
+    'create': 'isAdmin',
+    'edit': 'isAdmin'
+  }
+
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *
