@@ -48,6 +48,8 @@ module.exports.routes = {
 
   '/logout': 'AuthController.logout',
 
-  '/search': 'SearchController.search'
+  '/search': 'SearchController.search',
+
+  '/book/:id/booking': 'BookController.booking'
 
 };

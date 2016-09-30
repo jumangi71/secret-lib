@@ -36,7 +36,8 @@ module.exports = {
     },
 
     available: {
-      type: 'boolean'
+      type: 'boolean',
+      defaultsTo: true
     },
     available_date: {
       type: 'date'
