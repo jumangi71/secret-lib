@@ -7,10 +7,7 @@
 
 <div style="background-color: #fff">
   <% books.forEach(function(book) {  %>
-  <a href="<%= book.link() %>">
-    <%= book.title %>
-  </a>
-  <br>
+    <%- partial ('partials/book.ejs', {book: book}) %>
   <% }); %>
 </div>
 

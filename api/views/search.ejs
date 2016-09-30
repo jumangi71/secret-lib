@@ -1,0 +1,13 @@
+<form action="<%= sails.getRouteFor('SearchController.search').url %>" method="GET">
+  <input type="text" name="q" value="<%= req.query && req.query.q ? req.query.q : '' %>">
+  <input type="submit" name="submit" value="go">
+</form>
+
+
+<div style="background-color: #fff">
+  <% if (typeof result !== 'undefined') { %>
+    <% result.forEach(function(book) {  %>
+      <%- partial ('partials/book.ejs', {book: book}) %>
+    <% }); %>
+  <% } %>
+</div>

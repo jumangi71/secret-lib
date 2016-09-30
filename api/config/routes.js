@@ -46,6 +46,8 @@ module.exports.routes = {
 
   '/login': 'AuthController.login',
 
-  '/logout': 'AuthController.logout'
+  '/logout': 'AuthController.logout',
+
+  '/search': 'SearchController.search'
 
 };
