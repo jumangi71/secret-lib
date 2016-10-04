@@ -22,3 +22,11 @@ $ sails lift
 4) Go to [localhost:1337](http://localhost:1337/)
 
 Enjoy!
+
+
+p.s.
+
+```
+User.findOne({id: <UID>}).exec(function(err, user) {user.roles.add(<ROLE ID>); user.save();});
+User.findOne({id: <UID>}).populateAll().exec(console.log);
+```

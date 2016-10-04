@@ -27,7 +27,11 @@
             + Import stylesheets from other directories
             + Use a different or additional preprocessor, like SASS, SCSS or Stylus
     -->
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&subset=latin,cyrillic" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.grey-blue.min.css" />
+    <!--<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-red.min.css" />-->
+    <!--<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-blue.min.css" />-->
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/auth.css">
     <link rel="stylesheet" href="/styles/importer.css">
@@ -35,7 +39,69 @@
   </head>
 
   <body>
-    <%- body %>
+
+  <div class="layout-transparent mdl-layout mdl-js-layout mdl-layout--fixed-header page-<%= req.options.controller %>">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <a class="mdl-layout-title" href="/">Рамблер / Библиотека</a>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <% if (req.options.controller != 'home') { %>
+          <form action="<%= sails.getRouteFor('SearchController.search').url %>" method="GET">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+              <label class="mdl-button mdl-js-button mdl-button--icon" for="q">
+                <i class="material-icons">search</i>
+              </label>
+              <div class="mdl-textfield__expandable-holder">
+                <input class="mdl-textfield__input" type="text" id="q" name="q">
+                <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+              </div>
+            </div>
+          </form>
+          <% } %>
+
+          <% if (req.user) { %>
+            <a class="mdl-navigation__link" href="/personal"><%= req.user.first_name + ' ' + req.user.last_name %></a>
+            <a class="mdl-navigation__link" href="/logout">Выйти</a>
+          <% } else { %>
+            <a class="mdl-navigation__link" href="/login">Войти</a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Меню</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="/book">Книги</a>
+        <a class="mdl-navigation__link" href="/search">Поиск</a>
+        <a class="mdl-navigation__link" href="#">Как это работает</a>
+      </nav>
+    </div>
+    <% if (req.options.controller == 'auth') { %>
+      <div class="mdl-layout">
+        <main class="mdl-layout__content">
+          <%- body %>
+          <%- partial ('partials/footer.ejs') %>
+        </main>
+      </div>
+    <% } else { %>
+      <main class="mdl-layout__content">
+        <%- body %>
+        <%- partial ('partials/footer.ejs') %>
+      </main>
+    <% } %>
+
+
+
+  </div>
+
+
+
+
+
 
 
 
@@ -91,5 +157,6 @@
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
+    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
   </body>
 </html>

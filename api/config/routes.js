@@ -50,6 +50,9 @@ module.exports.routes = {
 
   '/search': 'SearchController.search',
 
-  '/book/:id/booking': 'BookController.booking'
+  '/book/:id/booking': 'BookController.booking',
+  '/book/:id/edit': 'BookController.edit',
+
+  '/personal': 'UserController.personal'
 
 };

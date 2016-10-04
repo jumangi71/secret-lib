@@ -1,4 +1,19 @@
-<a href="<%= book.link ? book.link() : '#' %>">
-  <%= book.title %>
-</a>
-<br>
+<div class="card-square mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
+  <div class="mdl-card__media mdl-color-text--grey-50 ">
+    <h2 class="mdl-card__title-text"><%= book.title %></h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    Автор: <%= book.author %><br>
+    Серия: <%= book.series %><br>
+    Изд.: <%= book.publishing_house %><br>
+
+    <% if (!book.available) { %>
+    <b>Кто то читает, нет в налиии</b>
+    <% } %>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="<%= book.link ? book.link() : '#' %>">
+      Подробнее
+    </a>
+  </div>
+</div>

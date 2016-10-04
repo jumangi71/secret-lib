@@ -1,0 +1,40 @@
+<!--<div class="container">-->
+  <!--<div class="mdl-grid">-->
+    <!--<label for="rack">Стеллаж</label>-->
+    <!--<select name="rack" id="rack">-->
+      <!--<% filtersData.racks.forEach(function(el) {  %>-->
+      <!--<option><%= el.rack %></option>-->
+      <!--<% }); %>-->
+    <!--</select>-->
+
+    <!--<label for="block">Ярус (снизу)</label>-->
+    <!--<select name="block" id="block">-->
+      <!--<% filtersData.blocks.forEach(function(el) {  %>-->
+      <!--<option><%= el.block %></option>-->
+      <!--<% }); %>-->
+    <!--</select>-->
+
+    <!--<label for="shelf">Полка (слева)</label>-->
+    <!--<select name="shelf" id="shelf">-->
+      <!--<% filtersData.shelfs.forEach(function(el) {  %>-->
+      <!--<option><%= el.shelf %></option>-->
+      <!--<% }); %>-->
+    <!--</select>-->
+  <!--</div>-->
+<!--</div>-->
+
+
+
+<div class="mdl-grid container">
+  <div class="mdl-layout-spacer"></div>
+
+  <% books.forEach(function(book) {  %>
+    <%- partial ('../partials/book.ejs', {book: book}) %>
+  <% }); %>
+
+  <div class="mdl-layout-spacer"></div>
+</div>
+
+<div class="container">
+<%- partial ('../partials/paging.ejs', {pages: pages}) %>
+</div>

@@ -60,8 +60,12 @@ module.exports = {
       required: true
     },
 
+    meta: {
+      type: 'json'
+    },
+
     link: function() {
-      return '/book/' + this.id;
+      return '/book/' + this.id + '/';
     }
 
   }

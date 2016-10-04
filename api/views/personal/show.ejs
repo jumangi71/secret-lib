@@ -1,0 +1,29 @@
+<br>
+<br>
+
+<div class="container">
+  <div class="mdl-typography--headline">Здравствуй, <%= req.user.first_name %></div><br>
+</div>
+<br>
+<div class="container">
+  Книги, которые забронированы тобой:
+</div>
+
+<div class="mdl-grid container">
+  <div class="mdl-layout-spacer"></div>
+
+  <% books.forEach(function(book) {  %>
+  <%- partial ('../partials/book.ejs', {book: book}) %>
+  <% }); %>
+
+  <div class="mdl-layout-spacer"></div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

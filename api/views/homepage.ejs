@@ -1,27 +1,23 @@
+<div class="search">
+  <div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--7-col text-center">
+      <div class="search__form">
+        <div class="mdl-typography--display-3">Найди источник знаний</div>
+        <%- partial('partials/search.ejs') %>
+      </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+  </div>
 
-<div style="background-color: #fff">
-<%= req.user ? req.user.username : '' %>
 </div>
 
-<br>
-<%- partial('partials/search.ejs') %>
-<br>
+<div class="mdl-grid container">
+  <div class="mdl-layout-spacer"></div>
 
-<div style="background-color: #fff">
   <% books.forEach(function(book) {  %>
     <%- partial ('partials/book.ejs', {book: book}) %>
   <% }); %>
+
+  <div class="mdl-layout-spacer"></div>
 </div>
-
-
-<br>
-
-<div style="background-color: #fff">
-  <% for (var i = 1; i <= pages; i++) {  %>
-  <a href="/?page=<%= i %>">
-    <%= i %>
-  </a>
-  <% } %>
-</div>
-
-

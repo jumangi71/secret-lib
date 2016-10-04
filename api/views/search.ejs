@@ -1,9 +1,16 @@
-<%- partial('partials/search.ejs') %>
+<div class="mdl-grid container">
+  <%- partial('partials/search.ejs') %>
+</div>
 
-<div style="background-color: #fff">
+<div class="mdl-grid container">
+  <div class="mdl-layout-spacer"></div>
   <% if (typeof result !== 'undefined') { %>
     <% result.forEach(function(book) {  %>
       <%- partial('partials/book.ejs', {book: book}) %>
     <% }); %>
   <% } %>
+  <div class="mdl-layout-spacer"></div>
 </div>
+<br>
+<br>
+<br>

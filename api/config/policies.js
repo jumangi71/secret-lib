@@ -36,7 +36,8 @@ module.exports.policies = {
   },
 
   UserController: {
-    'delete': 'isAdmin'
+    'delete': 'isAdmin',
+    'personal': 'isAuthenticated'
   },
 
   RoleController: {
