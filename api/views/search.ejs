@@ -1,5 +1,7 @@
 <div class="mdl-grid container">
+  <div class="mdl-cell mdl-cell--12-col">
   <%- partial('partials/search.ejs') %>
+  </div>
 </div>
 
 <div class="mdl-grid container">
@@ -12,5 +14,9 @@
   <div class="mdl-layout-spacer"></div>
 </div>
 <br>
+
+<div class="container">
+  <%- partial ('partials/paging.ejs', {pages: pages}) %>
+</div>
 <br>
 <br>

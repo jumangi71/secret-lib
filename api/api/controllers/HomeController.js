@@ -18,7 +18,7 @@ module.exports = {
   show: function(req, res) {
     Book.count()
       .then(function(count) {
-        var books = Book.find({available: true, 'sort': 'updatedAt ASC', limit: 40})
+        var books = Book.find({available: true, 'sort': 'updatedAt ASC', limit: 32})
           .then(function(books) {
             return books;
           });

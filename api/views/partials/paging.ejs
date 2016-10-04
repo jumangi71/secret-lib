@@ -1,8 +1,26 @@
 
 <div class="paging">
+    <% var lp = 4 %>
+    <% var page = req.query.page %>
+    <% var hidebleElems = [] %>
     <% for (var i = 1; i <= pages; i++) {  %>
-      <a href="?page=<%= i %>" class="mdl-chip">
-        <span class="mdl-chip__text"><%= i %></span>
-      </a>
+      <% var hide = false %>
+      <% if (page == i) { %>
+        <button class="mdl-chip" disabled>
+          <span class="mdl-chip__text"><%= i %></span>
+        </button>
+      <% } else { %>
+        <% hide = ((i > lp && i < parseInt(page)-lp) || (i > parseInt(page)+lp && i < parseInt(pages)-lp)) %>
+        <% if (hidebleElems[i-1] && !hide) { %>
+          <span class="mdl-chip"><span class="mdl-chip__text">...</span></span>
+        <% } %>
+        <% if (!hide) { %>
+          <a href="?<%= sails.querystring.stringify(_.assign(req.query, {page: i})) %>" class="mdl-chip">
+            <span class="mdl-chip__text"><%= i %></span>
+          </a>
+        <% } %>
+      <% } %>
+      <% hidebleElems[i] = hide %>
+
     <% } %>
 </div>

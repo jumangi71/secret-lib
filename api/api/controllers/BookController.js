@@ -27,7 +27,7 @@ module.exports = {
 
   find: function(req, res) {
     var page = req.query.page || 1;
-    var limit = 30;
+    var limit = 32;
     var filter = req.query.filter || {};
     var sort = {'sort': 'title ASC'};
 
@@ -72,7 +72,7 @@ module.exports = {
   },
 
   findOne: function(req, res) {
-    Admin.isAdmin(req.user.id, function(isAdmin) {
+
       Book.findOne({id: req.param('id')}).populate('holder')
         .then(function(book) {
           var url = book.title;
@@ -80,21 +80,30 @@ module.exports = {
             url += '+inauthor:' + book.author;
           }
           // TODO:
-          googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
-            if (error) console.log(error);
+          if (req.user && req.user.id) {
+            Admin.isAdmin(req.user.id, function(isAdmin) {
+              googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
+                if (error) console.log(error);
 
+                return res.view('book/item', {
+                  book: book,
+                  isAdmin: isAdmin,
+                  searched: results
+                });
+              });
+            });
+          } else {
             return res.view('book/item', {
               book: book,
-              isAdmin: isAdmin,
-              searched: results
+              isAdmin: false,
+              searched: []
             });
-          });
-
+          }
         })
         .fail(function(err) {
           return res.serverError(err);
         });
-    });
+
 
 
   }

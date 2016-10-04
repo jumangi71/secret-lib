@@ -15,18 +15,23 @@ var parseSearchData = function(data, cb) {
 module.exports = {
 
   search: function(req, res) {
+    var page = req.query.page || 1;
+    var limit = 32;
+    var offset = (page > 1) ? page*limit : 0;
     if (req.query && req.query.q) {
       Book.native(function(err, collection) {
-        //if (err) return res.serverError(err);
-        collection.find({$text: {$search: req.query.q, $language: "ru"}}).toArray(function(err, result) {
-          if (err) return res.serverError(err);
-          parseSearchData(result, function(results) {
-            return res.view('search', {result: results});
+        if (err) return res.serverError(err);
+        collection.find({$text: {$search: req.query.q, $language: "ru"}}).toArray(function(err, allResult) {
+          collection.find({$text: {$search: req.query.q, $language: "ru"}}).skip(offset).limit(limit).toArray(function(err, result) {
+            if (err) return res.serverError(err);
+            parseSearchData(result, function(results) {
+              return res.view('search', {result: results, page: page, pages: Math.ceil((allResult.length)/limit)-1 });
+            });
           });
         });
       });
     } else {
-      return res.view('search');
+      return res.view('search', {result: [], pages: 0, page: 0});
     }
   }
 };
