@@ -9,18 +9,35 @@ var googleBooks = require('google-books-search');
 
 module.exports = {
   booking: function(req, res) {
-    if (!req.user) return res.badRequest('Need be authtorize');
-
+    if (!req.user) return res.badRequest('Not authtorized');
     Book.findOne({id: req.param('id')}).exec(function(err, book) {
       if (req.user && req.isAuthenticated() && book.available) {
         book.available = false;
+        book.available_date = new Date(req.param('available_date'));
         book.holder = req.user.id;
         book.save(function(error) {
           if (error) console.log('err');
-          return res.ok(book);
+          return res.redirect(req.get('referer'));
         });
       } else {
-        return res.badRequest('Need be authorized and book must be available');
+        return res.badRequest('Not authtorized or book must be available');
+      }
+    });
+  },
+
+  unbooking: function(req, res) {
+    if (!req.user) return res.badRequest('Not authtorized');
+    Book.findOne({id: req.param('id')}).exec(function(err, book) {
+      if (req.user && req.isAuthenticated() && !book.available) {
+        book.available = true;
+        delete book.available_date;
+        book.holder = [];
+        book.save(function(error) {
+          if (error) console.log(error);
+          return res.redirect(req.get('referer'));
+        });
+      } else {
+        return res.badRequest('Not authtorized or book must be available');
       }
     });
   },
@@ -72,40 +89,36 @@ module.exports = {
   },
 
   findOne: function(req, res) {
+    Book.findOne({id: req.param('id')}).populate('holder')
+      .then(function(book) {
+        var url = book.title;
+        if (book.author) {
+          url += '+inauthor:' + book.author;
+        }
+        // TODO:
+        if (req.user && req.user.id) {
+          Admin.isAdmin(req.user.id, function(isAdmin) {
+            googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
+              if (error) console.log(error);
 
-      Book.findOne({id: req.param('id')}).populate('holder')
-        .then(function(book) {
-          var url = book.title;
-          if (book.author) {
-            url += '+inauthor:' + book.author;
-          }
-          // TODO:
-          if (req.user && req.user.id) {
-            Admin.isAdmin(req.user.id, function(isAdmin) {
-              googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
-                if (error) console.log(error);
-
-                return res.view('book/item', {
-                  book: book,
-                  isAdmin: isAdmin,
-                  searched: results
-                });
+              return res.view('book/item', {
+                book: book,
+                isAdmin: isAdmin,
+                searched: results
               });
             });
-          } else {
-            return res.view('book/item', {
-              book: book,
-              isAdmin: false,
-              searched: []
-            });
-          }
-        })
-        .fail(function(err) {
-          return res.serverError(err);
-        });
-
-
-
+          });
+        } else {
+          return res.view('book/item', {
+            book: book,
+            isAdmin: false,
+            searched: []
+          });
+        }
+      })
+      .fail(function(err) {
+        return res.serverError(err);
+      });
   }
 };
 

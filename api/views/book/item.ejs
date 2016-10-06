@@ -1,64 +1,120 @@
+<div class="site-back">
+  <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="<%= (typeof req.get('referer') != 'undefined' && req.get('referer') != req.url) ? req.get('referer') : '/' %>" title="назад" role="button">
+    <i class="material-icons" role="presentation">arrow_back</i>
+    <span class="mdl-button__ripple-container">
+      <span class="mdl-ripple"></span>
+    </span>
+  </a>
+</div>
+
 <br>
 <br>
 
-<div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col container">
-  <div class="mdl-card__media mdl-color-text--grey-50">
-    <h3><%= book.title %></h3>
-  </div>
+<div class="mb15">
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp container">
+  <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
+    <div style="min-height: 350px;background: url('/images/dog.png') bottom right 15% no-repeat #46B6AC"></div>
+  </header>
+  <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="overflow: visible">
+    <% if (typeof isAdmin != 'undefined' && isAdmin) { %>
+    <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" disabled href="<%= book.link() %>edit" style="position: absolute;right: 10px; top: -30px">
+      <i class="material-icons">edit</i>
+    </a>
+    <% } %>
 
-  <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--3-col" style="min-height: 350px;background: url('/images/dog.png') bottom right 15% no-repeat #46B6AC"></div>
-      <div class="mdl-cell mdl-cell--9-col" style="position: relative ">
-        <div>
-          Автор: <a href="/book?filter[author]=<%= book.author %>"><%= book.author %></a> <br>
-          Серия: <a href="/book?filter[series]=<%= book.series %>"><%= book.series %></a> <br>
-          Издательство: <a href="/book?filter[publishing_house]=<%= book.publishing_house %>"><%= book.publishing_house %></a>
-          <hr>
-          Стеллаж: <%= book.rack %> <br>
-          Ярус (снизу): <%= book.block %> <br>
-          Полка (слева): <%= book.shelf %> <br>
+    <div class="mdl-card__supporting-text">
+      <div>
+        <h4><%= book.title %></h4>
+        <% if (book.author) { %> Автор: <a href="/book?filter[author]=<%= book.author %>"><%= book.author %></a> <br> <% } %>
+        <% if (book.series) { %> Серия: <a href="/book?filter[series]=<%= book.series %>"><%= book.series %></a> <br> <% } %>
+        <% if (book.publishing_house) { %> Издательство: <a href="/book?filter[publishing_house]=<%= book.publishing_house %>"><%= book.publishing_house %></a> <br> <% } %>
 
-          <% if (book.holder) { %>
-          <b>На руках у:</b>
-          <%= book.holder.username %>@rambler-co.ru <br>
+        <hr>
+        Стеллаж: <%= book.rack %> <br>
+        Ярус (снизу): <%= book.block %> <br>
+        Полка (слева): <%= book.shelf %> <br>
+        <hr>
+
+        <% if (book.holder) { %>
+          <% if (req.user && book.holder.id == req.user.id) { %>
+            <form action="./unbooking" method="post">
+              <b>Книга у вас на руках, вы можете ее </b>
+              <button type="submit" class="mdl-button mdl-js-button mdl-button--accent">Вернуть</button>
+            </form>
           <% } else { %>
-          <b>Книга доступна, вы можете ее </b>
-          <a href="./booking" class="mdl-button mdl-js-button mdl-button--accent">Взять</a>
-          <%  } %>
+            <b>На руках у:</b>
+            <%= book.holder.first_name %> <%= book.holder.last_name %> <a href="mailto:<%= book.holder.username %>@rambler-co.ru">[<%= book.holder.username %>@rambler-co.ru]</a>
+            <% if (book.available_date) { %>
+            и освободится после <%= book.available_date.toLocaleString("ru") %><br>
+            <% } %>
+          <% } %>
+
+
+        <% } else { %>
+
+        <form action="./booking" method="post">
+          <b>Книга доступна, вы можете ее взять</b> <br>
+
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="available_date" id="available_date">
+            <label class="mdl-textfield__label" for="available_date">Когда вернешь? [ММ.ДД.ГГГГ]</label>
+          </div>
+          <button type="submit" class="mdl-button mdl-js-button mdl-button--accent">Взять</button>
+        </form>
+
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<% if (searched && searched.length) { %>
+  <div class="container">
+    <h4>Найдено в Google books:</h4>
+  </div>
+  <% searched.forEach(function(item, i) {  %>
+
+    <div class="mb15">
+    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp container">
+      <header class="section__play-btn mdl-cell mdl-cell--2-col mdl-color--teal-100 mdl-color-text--white">
+        <img src="<%= item.thumbnail %>" style="width: 100%">
+      </header>
+      <div class="mdl-card mdl-cell mdl-cell--10-col">
+        <div style="position: absolute; right: 10px;top: 10px">
+          <button id="menu-lower-right-<%=i%>" class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">more_vert</i>
+          </button>
+
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right-<%=i%>">
+            <li disabled class="mdl-menu__item">
+              <a href="#" disabled class="mdl-button mdl-js-button">Импортировать</a>
+            </li>
+          </ul>
         </div>
 
-        <% if (isAdmin) { %>
-          <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" href="<%= book.link() %>edit" style="position: absolute;right: 0; top: 0">
-            <i class="material-icons">edit</i>
-          </a>
-        <% } %>
-
-      </div>
-
-      <div class="mdl-cell mdl-cell--12-col">
-        <% if (searched) { %>
-          <% searched.forEach(function(item) {  %>
-            <%= item.title %> <br>
-            <%= item.publishedDate %> <br>
+        <div class="mdl-card__supporting-text">
+          <div>
+            <h4><%= item.title %></h4>
+            <% if (item.authors) { %>
+              Авторы:
+              <% item.authors.forEach(function(author) {  %>
+                <%= author %>
+              <% }); %>
+            <% } %><br>
+            <% if (item.publisher) { %> Издательство: <%= item.publisher %><br> <% } %>
+            <% if (item.publishedDate) { %> Дата публикации: <%= item.publishedDate %><br> <% } %>
 
             <% item.industryIdentifiers.forEach(function(isbn) {  %>
-            ISBN: <%= isbn.identifier %> <br>
+              ISBN: <%= isbn.identifier %> <br>
             <% }); %>
 
             <%= item.description %> <br>
-            <img src="<%= item.thumbnail %>">
-            <br>
-            <hr>
-          <% }); %>
-        <% } %>
+          </div>
+        </div>
       </div>
-
+    </section>
     </div>
-  </div>
-</div>
 
-
-<br>
-<br>
-<br>
+  <% }); %>
+<% } %>
