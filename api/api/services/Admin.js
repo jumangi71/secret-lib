@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 module.exports = {
   isAdmin: function(uid, cb) {
     User.findOne(uid).populateAll()

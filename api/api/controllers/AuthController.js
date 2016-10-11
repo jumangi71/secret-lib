@@ -6,6 +6,7 @@
  */
 
 var passport = require('passport');
+var _ = require("lodash");
 
 module.exports = {
 

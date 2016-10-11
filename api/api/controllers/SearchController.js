@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing searches
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var _ = require("lodash");
 
 var parseSearchData = function(data, cb) {
   var filter = _.map(data, '_id');
