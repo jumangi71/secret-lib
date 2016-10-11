@@ -100,9 +100,11 @@ module.exports = {
           Admin.isAdmin(req.user.id, function(isAdmin) {
             googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
               if (error) console.log(error);
+              console.log(results);
 
               return res.view('book/item', {
                 book: book,
+                isAuthenticated: true,
                 isAdmin: isAdmin,
                 searched: results
               });
@@ -111,6 +113,7 @@ module.exports = {
         } else {
           return res.view('book/item', {
             book: book,
+            isAuthenticated: false,
             isAdmin: false,
             searched: []
           });
