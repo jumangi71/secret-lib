@@ -6,7 +6,7 @@
  */
 
 var passport = require('passport');
-var _ = require("lodash");
+var _ = require('lodash');
 
 module.exports = {
 
@@ -24,8 +24,7 @@ module.exports = {
     if (!req.user && req.method == 'POST') {
       // TODO: TEMP FIX
       if (sails.config.environment == 'production') {
-        var userLogin = _.trimRight(req.param('username'), '@rambler-co.ru');
-        User.findOne({username: userLogin}).exec(function(err, usr) {
+        User.findOne({username: req.param('username')}).exec(function(err, usr) {
           if ((err) || (!usr)) return res.send({message: 'user not found'});
           req.logIn(usr, function(err) {
             if (err) return res.send(err);
@@ -35,7 +34,7 @@ module.exports = {
       } else {
         passport.authenticate('ldapauth', {session: false}, function(err, user) {
           if ((err) || (!user)) return res.send({message: 'user not found'});
-          var userLogin = _.trimRight(user.mail, '@rambler-co.ru');
+          var userLogin = _.trimEnd(user.mail, '@rambler-co.ru');
           User.findOne({username: userLogin}).exec(function(err, usr) {
             if ((err) || (!usr)) return res.send({message: 'user not found'});
             req.logIn(usr, function(err) {
