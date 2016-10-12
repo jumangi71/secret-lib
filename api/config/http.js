@@ -59,10 +59,19 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    // myRequestLogger: function (req, res, next) {
-    //     console.log("Requested :: ", req.method, req.url);
-    //     return next();
-    // }
+  myRequestLogger: function (req, res, next) {
+    console.log("Requested :: ", req.method, req.url);
+
+    if (sails.config.environment != 'production') {
+      var fs = require('fs');
+      fs.readFile(sails.config.appPath + '/config/manifest.json', 'utf8', function (err, data) {
+        if (err) throw err;
+        sails.assets = JSON.parse(data);
+      });
+    }
+
+    return next();
+  }
 
 
   /***************************************************************************

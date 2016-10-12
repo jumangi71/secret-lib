@@ -8,9 +8,16 @@
  * For more information on bootstrapping your app, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.bootstrap.html
  */
+var fs = require('fs');
 
 module.exports.bootstrap = function(cb) {
   sails.querystring = require('querystring');
+
+  fs.readFile(sails.config.appPath + '/config/manifest.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    sails.assets = JSON.parse(data);
+  });
+
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
