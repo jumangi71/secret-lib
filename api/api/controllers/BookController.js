@@ -11,7 +11,9 @@ module.exports = {
   booking: function(req, res) {
     if (!req.user) return res.badRequest('Not authtorized');
     Book.findOne({id: req.param('id')}).exec(function(err, book) {
-      if (req.user && req.isAuthenticated() && book.available) {
+      console.log(err, book, req.param('id'));
+      if (err) return res.serverError(err);
+      if (book && req.user && req.isAuthenticated() && book.available) {
         book.available = false;
         book.available_date = new Date(req.param('available_date'));
         book.holder = req.user.id;
@@ -44,7 +46,7 @@ module.exports = {
 
   find: function(req, res) {
     var page = req.query.page || 1;
-    var limit = 32;
+    var limit = 60;
     var filter = req.query.filter || {};
     var sort = {'sort': 'title ASC'};
 
@@ -121,6 +123,67 @@ module.exports = {
       .fail(function(err) {
         return res.serverError(err);
       });
+  },
+
+  findBooksByISBN: function(req, res) {
+    googleBooks.search(req.param('q'), { type: 'books', lang: 'ru'}, function(error, results) {
+      if (error) console.log(error);
+
+      return res.json(results);
+    });
+  },
+
+  add: function(req, res) {
+    var data = _.isEmpty(req.session.flash) ? {errors: false, data: false} : req.session.flash;
+    req.session.flash = {};
+    return res.view('book/add', data);
+  },
+
+  edit: function(req, res) {
+    Book.findOne({id: req.param('id')}).populate('holder')
+      .then(function(book) {
+
+        return res.view('book/edit', {
+          book: book
+        });
+      })
+      .fail(function(err) {
+        return res.serverError(err);
+      });
+  },
+
+  create: function(req, res) {
+    Book.create(req.params.all(), function createBook(err, book) {
+      if (err) {
+        if (err.ValidationError) {
+          req.session.flash = {errors: err.ValidationError, data: req.params.all()};
+          return res.redirect('book/add');
+        } else {
+          return res.serverError();
+        }
+      }
+
+      return res.redirect('/book/' + book.id);
+    });
+  },
+
+  update: function(req, res) {
+    Book.update({id: req.param('id')}, req.allParams())
+      .then(function(books) {
+        var book = _.head(books);
+        return res.redirect('/book/' + book.id);
+      })
+      .fail(function(err) {
+        return res.serverError(err);
+      });
+  },
+
+  destroy: function(req, res) {
+    Book.destroy({id: req.param('id')}).exec(function(err) {
+      if (err) return res.serverError();
+      return res.redirect('/book/');
+    });
   }
+
 };
 

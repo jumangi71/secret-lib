@@ -32,6 +32,7 @@ module.exports.policies = {
     'destroy': 'isAdmin',
     'create': 'isAdmin',
     'add': 'isAdmin',
+    'edit': 'isAdmin',
     'update': 'isAdmin'
   },
 

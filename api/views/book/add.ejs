@@ -1,0 +1,76 @@
+<div class="mb30 mt30">
+  <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp container">
+    <header class="section__play-btn mdl-cell mdl-cell--2-col mdl-color--white mdl-color-text--white">
+      <div class="book-cover <%= !_.isEmpty(data.cover) ? '' : 'book-cover_default' %>" id="cover-v" style="<%= !_.isEmpty(data.cover) ? 'background-image: url('+data.cover+')' : '' %>"></div>
+    </header>
+    <div class="mdl-card mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="overflow: visible">
+      <div class="mdl-card__supporting-text">
+        <form action="/book" id="addForm" method="post">
+          <input type="hidden" name="cover" id="cover" value="<%= !_.isEmpty(data.cover) ? data.cover : '' %>">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label <%= !_.isEmpty(errors.title) ? 'is-invalid' : '' %>">
+                <input class="mdl-textfield__input" type="text" id="title" name="title" value="<%= !_.isEmpty(data.title) ? data.title : '' %>">
+                <label class="mdl-textfield__label" for="title">Название</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="author" name="author" value="<%= !_.isEmpty(data.author) ? data.author : '' %>">
+                <label class="mdl-textfield__label" for="author">Авторы</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="series" name="series" value="<%= !_.isEmpty(data.series) ? data.series : '' %>">
+                <label class="mdl-textfield__label" for="series">Серия</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="publishing_house" name="publishing_house" value="<%= !_.isEmpty(data.publishing_house) ? data.publishing_house : '' %>">
+                <label class="mdl-textfield__label" for="publishing_house">Издательство</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <textarea class="mdl-textfield__input" type="text" rows= "3" id="description" name="description"><%= !_.isEmpty(data.description) ? data.description : '' %></textarea>
+                <label class="mdl-textfield__label" for="description">Описание</label>
+              </div>
+
+              <div class="mdl-selectfield">
+                <select name="rack" id="rack">
+                  <option value="" disabled>Стеллаж</option>
+                  <% var racks = ['черный (левый)', 'мал. белый (слева)', 'черный (правый)', 'мал.белый (справа)', 'белый'] %>
+                  <% _.forEach(racks, function(rack) { %>
+                    <option <%= (!_.isEmpty(data.rack) && data.rack == rack) ? 'selected' : '' %>><%= rack %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label <%= !_.isEmpty(errors.block) ? 'is-invalid' : '' %>">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="block" name="block" value="<%= !_.isEmpty(data.block) ? data.block : '' %>">
+                <label class="mdl-textfield__label" for="block">Ярус (снизу)</label>
+                <span class="mdl-textfield__error">Должно быть число</span>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label <%= !_.isEmpty(errors.shelf) ? 'is-invalid' : '' %>">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="shelf" name="shelf" value="<%= !_.isEmpty(data.shelf) ? data.shelf : '' %>">
+                <label class="mdl-textfield__label" for="shelf">Полка (слева)</label>
+                <span class="mdl-textfield__error">Должно быть число</span>
+              </div>
+
+            </div>
+
+            <div class="mdl-cell mdl-cell--6-col">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="isbn-search" name="isbn">
+                <label class="mdl-textfield__label" for="isbn-search">ISBN</label>
+              </div>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" type="button" disabled id="isbn-action">
+                <span>Импорт по ISBN</span>
+              </button>
+            </div>
+
+            <div class="mdl-cell mdl-cell--12-col">
+              <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Создать
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

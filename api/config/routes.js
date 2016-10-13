@@ -52,6 +52,10 @@ module.exports.routes = {
 
   'post /book/:id/booking': 'BookController.booking',
   'post /book/:id/unbooking': 'BookController.unbooking',
+  'get /book/:id/edit': 'BookController.edit',
+  'get /book/add': 'BookController.add',
+
+  'get /isbnsearch/:q': 'BookController.findBooksByISBN',
 
   '/book/:id/edit': 'BookController.edit',
 

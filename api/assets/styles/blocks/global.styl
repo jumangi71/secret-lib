@@ -1,0 +1,74 @@
+
+body
+  background-color #eae6e9
+
+
+.mdl-selectfield
+  font-family 'Roboto', 'Helvetica', 'Arial', sans-serif
+  position relative
+  padding 20px 0
+
+  &:after
+    position: absolute
+    top: 0.75em
+    right: 0.5em
+    /* Styling the down arrow */
+    width: 0
+    height: 0
+    padding: 0
+    content: ''
+    border-left: .25em solid transparent
+    border-right: .25em solid transparent
+    border-top: .375em solid $select-border-color
+    pointer-events: none
+
+  label
+    display none
+
+  select
+    appearance none
+    font-family inherit
+    background-color transparent
+    width 100%
+    padding $select-padding 0
+    font-size $select-font-size
+    color $select-color
+    border none
+    border-bottom 1px solid $select-border-color
+    &:focus
+      outline none
+
+.book-cover
+  background-image url('~_images/dog.png')
+  background-repeat no-repeat
+  background-size contain
+  background-position top center
+  min-height 250px
+  background-color #fff
+
+  &_default
+    background-size 70%
+    background-position bottom right
+
+.card-book
+  .mdl-card__title-text
+    z-index 2
+    position relative
+    font-size 20px
+
+  .mdl-card__title
+    //background-size cover
+    background-repeat no-repeat
+    background-position center
+    background-size contain
+    position relative
+    min-height 225px
+    color #fff
+    &:after
+      content ''
+      position absolute
+      left 0
+      right 0
+      top 0
+      bottom 0
+      background-color rgba(0,0,0, .3)

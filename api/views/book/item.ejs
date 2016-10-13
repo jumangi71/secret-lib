@@ -12,27 +12,37 @@
 
 <div class="mb15">
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp container">
-  <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
-    <div style="min-height: 350px;background: url('/<%= sails.assets.assets['images/dog.png'] %>') bottom right 15% no-repeat #46B6AC"></div>
+  <header class="section__play-btn mdl-cell mdl-cell--2-col mdl-color--white mdl-color-text--white">
+    <% if (book.cover) { %>
+      <div class="book-cover" style="background-image: url('<%= book.cover %>')"></div>
+    <% } else { %>
+      <div class="book-cover book-cover_default"></div>
+    <% } %>
   </header>
-  <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="overflow: visible">
+  <div class="mdl-card mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="overflow: visible">
     <% if (typeof isAdmin != 'undefined' && isAdmin) { %>
-    <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" disabled href="<%= book.link() %>edit" style="position: absolute;right: 10px; top: -30px">
+    <a id="editBook" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" href="<%= book.link() %>edit" style="position: absolute;right: 10px; top: -30px">
       <i class="material-icons">edit</i>
     </a>
+    <div class="mdl-tooltip mdl-tooltip--large" for="editBook">
+      Редактировать
+    </div>
     <% } %>
 
     <div class="mdl-card__supporting-text">
       <div>
         <h4><%= book.title %></h4>
+        <% if (book.isbn) { %> ISBN: <%= book.isbn %><br> <% } %>
         <% if (book.author) { %> Автор: <a href="/book?filter[author]=<%= book.author %>"><%= book.author %></a> <br> <% } %>
         <% if (book.series) { %> Серия: <a href="/book?filter[series]=<%= book.series %>"><%= book.series %></a> <br> <% } %>
         <% if (book.publishing_house) { %> Издательство: <a href="/book?filter[publishing_house]=<%= book.publishing_house %>"><%= book.publishing_house %></a> <br> <% } %>
 
+        <% if (book.description) { %> <hr><p><%= book.description %><p> <br> <% } %>
+
         <hr>
-        Стеллаж: <%= book.rack %> <br>
-        Ярус (снизу): <%= book.block %> <br>
-        Полка (слева): <%= book.shelf %> <br>
+        Стеллаж: <a href="/book?filter[rack]=<%= book.rack %>"><%= book.rack %></a> <br>
+        Ярус (снизу): <a href="/book?filter[block]=<%= book.block %>"><%= book.block %></a> <br>
+        Полка (слева): <a href="/book?filter[shelf]=<%= book.shelf %>"><%= book.shelf %></a> <br>
         <hr>
 
         <% if (isAuthenticated) { %>
@@ -53,7 +63,7 @@
 
           <% } else { %>
 
-          <form action="./booking" method="post">
+          <form action="/book/<%= book.id %>/booking" method="post">
             <b>Книга доступна, вы можете ее взять</b> <br>
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -79,7 +89,7 @@
 
     <div class="mb15">
     <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp container">
-      <header class="section__play-btn mdl-cell mdl-cell--2-col mdl-color--green-100 mdl-color-text--white">
+      <header class="section__play-btn mdl-cell mdl-cell--2-col mdl-color--white mdl-color-text--white">
         <img src="<%= item.thumbnail %>" style="width: 100%">
       </header>
       <div class="mdl-card mdl-cell mdl-cell--10-col">

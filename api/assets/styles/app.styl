@@ -1,5 +1,8 @@
-body
-  background-color #eae6e9
+
+@import 'blocks/vars'
+@import 'blocks/global'
+
+
 
 .mdl-layout-title
   text-decoration none
@@ -40,6 +43,15 @@ body
 .mb15
   margin-bottom 15px
 
+.mt30
+  margin-top 30px
+
+.mb30
+  margin-bottom 30px
+
+.block-relative
+  position relative
+
 .container
   max-width 1024px
   padding 0
@@ -63,3 +75,12 @@ body
   left 16px
   color rgb(66, 66, 66)
   z-index 9999
+
+#fly-btn
+  position fixed
+  display block
+  right 0
+  bottom 0
+  margin-right 40px
+  margin-bottom 40px
+  z-index 900

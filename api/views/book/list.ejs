@@ -27,7 +27,6 @@
   <%- partial ('../partials/paging.ejs', {pages: pages}) %>
 </div>
 
-
 <div class="mt15 mb15">
 <div class="mdl-grid container">
   <div class="mdl-layout-spacer"></div>
@@ -42,4 +41,11 @@
 
 <div class="container">
 <%- partial ('../partials/paging.ejs', {pages: pages}) %>
+</div>
+
+<a href="/book/add" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="fly-btn" target="_blank">
+  <i class="material-icons">add</i>
+</a>
+<div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--top" for="fly-btn">
+  Создать книгу
 </div>
