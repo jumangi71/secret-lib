@@ -6,6 +6,7 @@
  */
 
 var googleBooks = require('google-books-search');
+var googleBooksCfg = { type: 'books', lang: 'ru', limit: 10, order: 'relevance', key: 'AIzaSyAvB8xfOvqv7qoUJnMs_Fybx8VYBj55_9Q'};
 
 module.exports = {
   booking: function(req, res) {
@@ -100,7 +101,7 @@ module.exports = {
         // TODO:
         if (req.user && req.user.id) {
           Admin.isAdmin(req.user.id, function(isAdmin) {
-            googleBooks.search(url, { type: 'books', lang: 'ru'}, function(error, results) {
+            googleBooks.search(url, googleBooksCfg, function(error, results) {
               if (error) console.log(error);
 
               return res.view('book/item', {
@@ -126,7 +127,7 @@ module.exports = {
   },
 
   findBooksByISBN: function(req, res) {
-    googleBooks.search(req.param('q'), { type: 'books', lang: 'ru'}, function(error, results) {
+    googleBooks.search(req.param('q'), googleBooksCfg, function(error, results) {
       if (error) console.log(error);
 
       return res.json(results);
