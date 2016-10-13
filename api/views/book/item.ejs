@@ -117,9 +117,11 @@
             <% if (item.publisher) { %> Издательство: <%= item.publisher %><br> <% } %>
             <% if (item.publishedDate) { %> Дата публикации: <%= item.publishedDate %><br> <% } %>
 
-            <% item.industryIdentifiers.forEach(function(isbn) {  %>
-              ISBN: <%= isbn.identifier %> <br>
-            <% }); %>
+            <% if (item.industryIdentifiers) {  %>
+              <% item.industryIdentifiers.forEach(function(isbn) {  %>
+                ISBN: <%= isbn.identifier %> <br>
+              <% }); %>
+            <% } %>
 
             <%= item.description %> <br>
           </div>
