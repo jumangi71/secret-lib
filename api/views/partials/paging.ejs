@@ -1,12 +1,11 @@
 
 <% if (pages && pages > 1) { %>
 <div class="paging mt15 mb15">
-
-
     <% var lp = 4 %>
     <% var page = req.query.page || 1 %>
     <% var hidebleElems = [] %>
     <% for (var i = 1; i <= pages; i++) {  %>
+      <% var queryArr = _.assign(_.clone(req.query), {page: i}); %>
       <% var hide = false %>
       <% if (page == i) { %>
         <a class="mdl-chip active" href="#">
@@ -18,7 +17,7 @@
           <span class="mdl-chip"><span class="mdl-chip__text">...</span></span>
         <% } %>
         <% if (!hide) { %>
-          <a href="?<%= sails.querystring.stringify(_.assign(_.clone(req.query), {page: i})) %>" class="mdl-chip">
+          <a href="?<%= sails.qs.stringify(queryArr, { encode: false }) %>" class="mdl-chip">
             <span class="mdl-chip__text"><%= i %></span>
           </a>
         <% } %>

@@ -48,8 +48,19 @@ module.exports = {
   find: function(req, res) {
     var page = req.query.page || 1;
     var limit = 60;
-    var filter = req.query.filter || {};
+    var filter = _.clone(req.query.filter) || {};
     var sort = {'sort': 'title ASC'};
+
+    if (filter.block) {
+      _.forEach(filter.block, function(el, k) {
+        filter.block[k] = parseInt(el);
+      })
+    }
+    if (filter.shelf) {
+      _.forEach(filter.shelf, function(el, k) {
+        filter.shelf[k] = parseInt(el);
+      })
+    }
 
     Book.find(filter, sort).paginate({page: page, limit: limit})
       .then(function(books) {
@@ -79,7 +90,7 @@ module.exports = {
         return [count, books, racks, blocks, shelfs];
       })
       .spread(function(count, books, racks, blocks, shelfs) {
-        var coords = {racks: racks, blocks: blocks, shelfs: shelfs};
+        var coords = {racks: _.sortBy(racks, 'rack'), blocks: _.sortBy(blocks, 'block'), shelfs: _.sortBy(shelfs, 'shelf')};
         return res.view('book/list', {
           pages: Math.ceil(count/limit),
           books: books,

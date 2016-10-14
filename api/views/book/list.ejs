@@ -1,27 +1,64 @@
-<!--<div class="container">-->
-  <!--<div class="mdl-grid">-->
-    <!--<label for="rack">Стеллаж</label>-->
-    <!--<select name="rack" id="rack">-->
-      <!--<% filtersData.racks.forEach(function(el) {  %>-->
-      <!--<option><%= el.rack %></option>-->
-      <!--<% }); %>-->
-    <!--</select>-->
 
-    <!--<label for="block">Ярус (снизу)</label>-->
-    <!--<select name="block" id="block">-->
-      <!--<% filtersData.blocks.forEach(function(el) {  %>-->
-      <!--<option><%= el.block %></option>-->
-      <!--<% }); %>-->
-    <!--</select>-->
+<form action="/book/" method="get" class="container">
+  <div class="mdl-grid">
+      <% _.forEach(_.omit(req.query.filter, 'rack', 'block', 'shelf'), function(el, k) { %>
+        <input type="hidden" name="filter[<%= k %>]" value="<%= el %>">
+      <% }); %>
 
-    <!--<label for="shelf">Полка (слева)</label>-->
-    <!--<select name="shelf" id="shelf">-->
-      <!--<% filtersData.shelfs.forEach(function(el) {  %>-->
-      <!--<option><%= el.shelf %></option>-->
-      <!--<% }); %>-->
-    <!--</select>-->
-  <!--</div>-->
-<!--</div>-->
+      <div class="mdl-cell mdl-cell--4-col">
+        <div class="mdl-selectfield">
+          <select name="filter[rack]" id="rack" multiple="multiple" size="7">
+            <option value="" disabled selected>Стеллаж</option>
+            <% filtersData.racks.forEach(function(el) {  %>
+              <% var selected = false; %>
+              <% if (req.query.filter && req.query.filter.rack) { %>
+                <% selected = (_.isArray(req.query.filter.rack) ? _.indexOf(req.query.filter.rack, el.rack) >= 0 : req.query.filter.rack == el.rack) %>
+              <% } %>
+              <option <%= selected ? 'selected' : '' %>><%= el.rack %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--4-col">
+        <div class="mdl-selectfield">
+          <select name="filter[block]" id="block" multiple="multiple" size="7">
+            <option value="" disabled selected>Ярус (снизу)</option>
+            <% filtersData.blocks.forEach(function(el) {  %>
+              <% var selected = false; %>
+              <% if (req.query.filter && req.query.filter.block) { %>
+                <% selected = (_.isArray(req.query.filter.block) ? _.indexOf(req.query.filter.block, el.block) >= 0 : req.query.filter.block == el.block) %>
+              <% } %>
+              <option <%= selected ? 'selected' : '' %>><%= el.block %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--4-col">
+        <div class="mdl-selectfield">
+          <select name="filter[shelf]" id="shelf" multiple="multiple" size="7">
+            <option value="" disabled selected>Полка (слева)</option>
+            <% filtersData.shelfs.forEach(function(el) {  %>
+              <% var selected = false; %>
+              <% if (req.query.filter && req.query.filter.shelf) { %>
+                <% selected = (_.isArray(req.query.filter.shelf) ? _.indexOf(req.query.filter.shelf, el.shelf) >= 0 : req.query.filter.shelf == el.shelf) %>
+              <% } %>
+              <option <%= selected ? 'selected' : '' %>><%= el.shelf %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Фильтр</button>&nbsp;
+    </div>
+
+
+
+  </div>
+</form>
+
 
 <div class="container">
   <%- partial ('../partials/paging.ejs', {pages: pages}) %>

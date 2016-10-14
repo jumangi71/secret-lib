@@ -11,7 +11,7 @@
 var fs = require('fs');
 
 module.exports.bootstrap = function(cb) {
-  sails.querystring = require('querystring');
+  sails.qs = require('qs');
 
   fs.readFile(sails.config.appPath + '/config/manifest.json', 'utf8', function (err, data) {
     if (err) throw err;
