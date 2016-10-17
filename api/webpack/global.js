@@ -53,9 +53,8 @@ module.exports = function(_path) {
     module: {
       loaders: [
         { test: /\.styl$/, loader: TextPlugin.extract('style', 'css!postcss!stylus') },
-        { test: /\.(png|ico|jpg|jpeg|gif)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/images/[name].[hash].[ext]'] },
         { test: /\.(svg)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/images/[name].[ext]'] },
-        { test: /\.(css|ttf|eot|woff|woff2)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/fonts/[name].[hash].[ext]'] },
+        { test: /\.(css|ttf|eot|woff|woff2|png|ico|jpg|jpeg|gif)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/static/[name].[hash].[ext]'] },
         { loader: 'babel',
           test: /\.js$/,
           exclude: /(node_modules|autoprefixer|vendors)/,
