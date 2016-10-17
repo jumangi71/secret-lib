@@ -92,11 +92,24 @@ module.exports = {
       })
       .spread(function(count, books, racks, blocks, shelfs) {
         var coords = {racks: _.sortBy(racks, 'rack'), blocks: _.sortBy(blocks, 'block'), shelfs: _.sortBy(shelfs, 'shelf')};
-        return res.view('book/list', {
-          pages: Math.ceil(count/limit),
-          books: books,
-          filtersData: coords
-        });
+
+        if (req.user && req.user.id) {
+          Admin.isAdmin(req.user.id, function(isAdmin) {
+            return res.view('book/list', {
+              pages: Math.ceil(count/limit),
+              books: books,
+              filtersData: coords,
+              isAdmin: isAdmin
+            });
+          });
+        } else {
+          return res.view('book/list', {
+            pages: Math.ceil(count/limit),
+            books: books,
+            filtersData: coords,
+            isAdmin: false
+          });
+        }
       })
       .fail(function(err) {
         if (err) console.log(err);

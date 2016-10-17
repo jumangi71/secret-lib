@@ -1,18 +1,4 @@
 
-var filteredOptions = ['rack', 'block', 'shelf'];
-
-//var _getRacks = function(cb) {
-//  Book.native(function(err, collection) {
-//    collection.aggregate(
-//      [{ "$group": {"_id": "$rack", "books": {"$push": "$_id"}} }],
-//      function(err,result) {
-//        if (err) return res.serverError(err);
-//        if (_.isFunction(cb)) cb(result);
-//      }
-//    );
-//  });
-//};
-
 module.exports = {
 
   show: function(req, res) {
@@ -26,31 +12,24 @@ module.exports = {
         return [count, books];
       })
       .spread(function(count, books) {
-        return res.view('homepage', {
-          books: books
-        });
+        if (req.user && req.user.id) {
+          Admin.isAdmin(req.user.id, function(isAdmin) {
+            return res.view('homepage', {
+              books: books,
+              isAdmin: isAdmin
+            });
+          });
+        } else {
+          return res.view('homepage', {
+            books: books,
+            isAdmin: false
+          });
+        }
       })
       .fail(function(err) {
         if (err) console.log(err);
       });
 
-
-    //Book.count().exec(function(err, count) {
-    //  if (err) console.log('err');
-    //  Book.find().paginate({page: page, limit: limit})
-    //    .then(function(books) {
-    //      _getRacks(function(group) {
-    //        return res.view('homepage', {
-    //          pages: Math.ceil(count/limit),
-    //          books: books,
-    //          racks: group
-    //        });
-    //      });
-    //    })
-    //    .catch(function(err) {
-    //      if (err) console.log(err);
-    //    });
-    //});
   }
 };
 

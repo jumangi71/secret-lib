@@ -53,9 +53,6 @@
     <div class="mdl-cell mdl-cell--12-col">
       <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Фильтр</button>&nbsp;
     </div>
-
-
-
   </div>
 </form>
 
@@ -80,9 +77,11 @@
 <%- partial ('../partials/paging.ejs', {pages: pages}) %>
 </div>
 
+<% if (isAdmin) { %>
 <a href="/book/add" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="fly-btn" target="_blank">
   <i class="material-icons">add</i>
 </a>
 <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--top" for="fly-btn">
   Создать книгу
 </div>
+<% } %>

@@ -45,39 +45,37 @@
         Полка (слева): <a href="/book?filter[shelf]=<%= book.shelf %>"><%= book.shelf %></a> <br>
         <hr>
 
-        <% /* if (isAuthenticated) { */ %>
-          <% if (book.holder) { %>
-            <% if (req.user && book.holder.id == req.user.id) { %>
-              <form action="./unbooking" method="post">
-                <p>Книга у вас на руках, вы планировали вернуть ее <%= sails.moment(book.available_date).format('D.M.YYYY') %></p>
-                <button type="submit" class="mdl-button mdl-js-button mdl-button--accent">Вернуть сейчас</button>
-              </form>
-            <% } else { %>
-              <b>На руках у:</b>
-              <%= book.holder.first_name %> <%= book.holder.last_name %> <a href="mailto:<%= book.holder.username %>@rambler-co.ru">[<%= book.holder.username %>@rambler-co.ru]</a>
-              <% if (book.taken_from) { %>
-              c <%= sails.moment(book.taken_from).format('D.M.YYYY') %>&nbsp;
-              <% } %>
-              <% if (book.available_date) { %>
-              и освободится после <%= sails.moment(book.available_date).format('D.M.YYYY') %><br>
-              <% } %>
-            <% } %>
-
-
-          <% } else { %>
-
-            <form action="/book/<%= book.id %>/booking" method="post">
-              <b>Книга доступна, вы можете ее взять</b> <br>
-
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" name="available_date" id="dateInp">
-                <label class="mdl-textfield__label" for="dateInp">Дата возврата</label>
-              </div>
-              <button type="submit" class="mdl-button mdl-js-button mdl-button--accent" id="getBookCtrl">Взять</button>
+        <% if (book.holder) { %>
+          <% if (req.user && book.holder.id == req.user.id) { %>
+            <form action="./unbooking" method="post">
+              <p>Книга у вас на руках, вы планировали вернуть ее <%= sails.moment(book.available_date).format('D.M.YYYY') %></p>
+              <button type="submit" class="mdl-button mdl-js-button mdl-button--accent">Вернуть сейчас</button>
             </form>
-
+          <% } else { %>
+            <b>На руках у:</b>
+            <%= book.holder.first_name %> <%= book.holder.last_name %> <a href="mailto:<%= book.holder.username %>@rambler-co.ru">[<%= book.holder.username %>@rambler-co.ru]</a>
+            <% if (book.taken_from) { %>
+            c <%= sails.moment(book.taken_from).format('D.M.YYYY') %>&nbsp;
+            <% } %>
+            <% if (book.available_date) { %>
+            и освободится после <%= sails.moment(book.available_date).format('D.M.YYYY') %><br>
+            <% } %>
           <% } %>
-        <% /* } */ %>
+
+        <% } else if (isAuthenticated) { %>
+          <form action="/book/<%= book.id %>/booking" method="post">
+            <b>Книга доступна, вы можете ее взять</b> <br>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" name="available_date" id="dateInp">
+              <label class="mdl-textfield__label" for="dateInp">Дата возврата</label>
+            </div>
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--accent" id="getBookCtrl">Взять</button>
+          </form>
+        <% } else { %>
+            <p><a href="/login">Войдите</a>, чтобы взять книгу</p>
+        <% } %>
+
       </div>
     </div>
   </div>
