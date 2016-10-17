@@ -7,16 +7,17 @@
 
 var googleBooks = require('google-books-search');
 var googleBooksCfg = { type: 'books', lang: 'ru', limit: 10, order: 'relevance', key: 'AIzaSyAvB8xfOvqv7qoUJnMs_Fybx8VYBj55_9Q'};
+var moment = require('moment');
 
 module.exports = {
   booking: function(req, res) {
     if (!req.user) return res.badRequest('Not authtorized');
     Book.findOne({id: req.param('id')}).exec(function(err, book) {
-      console.log(err, book, req.param('id'));
       if (err) return res.serverError(err);
       if (book && req.user && req.isAuthenticated() && book.available) {
         book.available = false;
-        book.available_date = new Date(req.param('available_date'));
+        book.available_date = moment(req.param('available_date'), 'D.M.YYYY').format("YYYY-MM-DD");
+        book.taken_from = moment().format("YYYY-MM-DD");
         book.holder = req.user.id;
         book.save(function(error) {
           if (error) console.log('err');

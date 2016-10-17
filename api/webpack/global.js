@@ -52,11 +52,13 @@ module.exports = function(_path) {
     // modules resolvers
     module: {
       loaders: [
-        //{ test: /\.pug$/, loader: 'pug' },
         { test: /\.styl$/, loader: TextPlugin.extract('style', 'css!postcss!stylus') },
-        { test: /\.(css|ttf|eot|woff|woff2|png|ico|jpg|jpeg|gif|svg)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/static/[name].[hash].[ext]'] },
+        { test: /\.(png|ico|jpg|jpeg|gif)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/images/[name].[hash].[ext]'] },
+        { test: /\.(svg)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/images/[name].[ext]'] },
+        { test: /\.(css|ttf|eot|woff|woff2)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/fonts/[name].[hash].[ext]'] },
         { loader: 'babel',
           test: /\.js$/,
+          exclude: /(node_modules|autoprefixer|vendors)/,
           query: {
             presets: ['es2015'],
             ignore: ['node_modules', 'bower_components']
@@ -76,6 +78,7 @@ module.exports = function(_path) {
         rootAssetPath: rootAssetPath,
         ignorePaths: ['/stylesheets', '/js', '/svg', '.DS_Store', 'robots.txt']
       }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
       // create instance for entrypoint index.html building
       //new HtmlPlugin({
       //  title: 'Rambler Webpack Dev Boilerplate',

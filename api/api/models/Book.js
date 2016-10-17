@@ -42,6 +42,9 @@ module.exports = {
     available_date: {
       type: 'date'
     },
+    taken_from: {
+      type: 'date'
+    },
 
     holder: {
       model: 'user'

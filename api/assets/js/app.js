@@ -1,10 +1,46 @@
 require('_styles/app.styl');
+
+const moment = require('moment');
+const mdDateTimePicker = require('md-date-time-picker');
+
 const gator = require('gator');
 
 let addForm = document.querySelector('#addForm');
 let isbnInput = document.querySelector('#isbn-search');
 let isbnAction = document.querySelector('#isbn-action');
 let removeCheck = document.querySelector('#removeCheck');
+let dateInput = document.querySelector('#dateInp');
+let getBookCtrl = document.querySelector('#getBookCtrl');
+
+moment.locale('ru');
+
+if (dateInput) {
+  if (getBookCtrl) {
+    gator(getBookCtrl).on('click', (e) => {
+      if (!dateInput.value.length) {
+        e.preventDefault();
+        dateInput.parentNode.classList.add('is-invalid');
+      }
+    });
+  }
+
+  let dialogDate = new mdDateTimePicker.default({
+    type: 'date',
+    init: moment(),
+    past: moment().subtract(0, 'years'),
+    future: moment().add(1, 'month')
+  });
+  dialogDate.trigger = dateInput;
+
+  gator(dateInput)
+    .on('click', () => {
+      dialogDate.toggle();
+    })
+    .on('onOk', function() {
+      this.parentNode.classList.add('is-dirty');
+      this.value = dialogDate.time.format('D.M.YYYY');
+    });
+}
 
 if (removeCheck) {
   let removeBook = document.querySelector('#removeBook');
@@ -56,7 +92,6 @@ if (isbnInput && addForm) {
         preloader.remove();
 
         let data = JSON.parse(this.responseText);
-        console.log(data);
 
         if (data[0]) {
           addForm.querySelector('#title').value = '';

@@ -12,6 +12,7 @@ var fs = require('fs');
 
 module.exports.bootstrap = function(cb) {
   sails.qs = require('qs');
+  sails.moment = require('moment');
 
   fs.readFile(sails.config.appPath + '/config/manifest.json', 'utf8', function (err, data) {
     if (err) throw err;
