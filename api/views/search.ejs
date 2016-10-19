@@ -6,10 +6,14 @@
 
 <div class="mdl-grid container">
   <div class="mdl-layout-spacer"></div>
-  <% if (typeof result !== 'undefined') { %>
+  <% if (!_.isEmpty(result)) { %>
     <% result.forEach(function(book) {  %>
       <%- partial('partials/book.ejs', {book: book}) %>
     <% }); %>
+  <% } else { %>
+    <div class="mt30 mb30">
+      Ничего не найдено
+    </div>
   <% } %>
   <div class="mdl-layout-spacer"></div>
 </div>

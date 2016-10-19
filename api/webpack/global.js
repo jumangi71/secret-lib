@@ -14,28 +14,22 @@ var autoprefixer = require('autoprefixer');
  * @return {[type]}       [description]
  */
 module.exports = function(_path) {
-  // define local variables
   // var dependencies  = Object.keys(require(_path + '/package').dependencies);
   var rootAssetPath = './assets';
 
-  console.log(path.join(_path + '/config', 'manifest.json'));
-  // return objecy
   return {
-    // entry points
     entry: {
-      application: _path + '/assets/js/app.js',
+      application: _path + '/assets/js/app.js'
       //vendors: dependencies
     },
 
-    // output system
     output: {
       path: path.join(_path, '.tmp', 'public'),
       filename: path.join('assets', 'js', '[name].[hash].js'),
-      chunkFilename: '[id].bundle.[chunkhash].js',
+      chunkFilename: path.join('assets', 'js', '[id].[chunkhash].js'),
       publicPath: '/'
     },
 
-    // resolves modules
     resolve: {
       extensions: ['', '.js'],
       modulesDirectories: ['node_modules'],
@@ -44,12 +38,11 @@ module.exports = function(_path) {
         //_fonts: path.join(_path, 'assets', 'fonts'),
         //_modules: path.join(_path, 'modules'),
         _images: path.join(_path, 'assets', 'images'),
-        _styles: path.join(_path, 'assets', 'styles'),
+        _styles: path.join(_path, 'assets', 'styles')
         //_templates: path.join(_path, 'assets', 'templates')
       }
     },
 
-    // modules resolvers
     module: {
       loaders: [
         { test: /\.styl$/, loader: TextPlugin.extract('style', 'css!postcss!stylus') },
@@ -57,19 +50,17 @@ module.exports = function(_path) {
         { test: /\.(css|ttf|eot|woff|woff2|png|ico|jpg|jpeg|gif)$/i, loaders: ['file?context=' + rootAssetPath + '&name=assets/static/[name].[hash].[ext]'] },
         { loader: 'babel',
           test: /\.js$/,
-          exclude: /(node_modules|autoprefixer|vendors)/,
+          exclude: /(node_modules|autoprefixer|vendors|dependencies)/,
           query: {
             presets: ['es2015'],
-            ignore: ['node_modules', 'bower_components']
-          },
+            ignore: ['node_modules', 'bower_components', 'dependencies']
+          }
         }
       ]
     },
 
-    // post css
     postcss: [autoprefixer({ browsers: ['last 5 versions'] })],
 
-    // load plugins
     plugins: [
       new webpack.optimize.CommonsChunkPlugin('vendors', 'assets/js/vendors.[hash].js'),
       new TextPlugin('assets/styles/[name].[chunkhash].css'),
@@ -78,13 +69,6 @@ module.exports = function(_path) {
         ignorePaths: ['/stylesheets', '/js', '/svg', '.DS_Store', 'robots.txt']
       }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
-      // create instance for entrypoint index.html building
-      //new HtmlPlugin({
-      //  title: 'Rambler Webpack Dev Boilerplate',
-      //  chunks: ['application', 'vendors'],
-      //  filename: 'index.html',
-      //  template: path.join(_path, 'app', 'assets', 'templates', 'layouts', 'index.html')
-      //})
     ]
   };
 };

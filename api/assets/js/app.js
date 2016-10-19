@@ -2,7 +2,8 @@ require('_styles/app.styl');
 
 const moment = require('moment');
 // TODO: https://github.com/puranjayjain/md-date-time-picker/issues/119
-const mdDateTimePicker = require('./mdDateTimePicker.min.js');
+const mdDateTimePicker = require('./dependencies/mdDateTimePicker.min.js');
+// const sails = require('./dependencies/sails.io.js');
 const gator = require('gator');
 
 let addForm = document.querySelector('#addForm');
@@ -14,6 +15,7 @@ let getBookCtrl = document.querySelector('#getBookCtrl');
 
 moment.locale('ru');
 
+
 if (dateInput) {
   if (getBookCtrl) {
     gator(getBookCtrl).on('click', (e) => {
@@ -24,7 +26,7 @@ if (dateInput) {
     });
   }
 
-  let dialogDate = new mdDateTimePicker.default({
+  let dialogDate = new mdDateTimePicker.default({ // eslint-disable-line
     type: 'date',
     init: moment(),
     past: moment().subtract(0, 'years'),

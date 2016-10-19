@@ -63,6 +63,10 @@ module.exports = {
       })
     }
 
+    if (filter.available && filter.available == 'on') {
+      filter.available = true;
+    }
+
     Book.find(filter, sort).paginate({page: page, limit: limit})
       .then(function(books) {
         var count = Book.count(filter)
@@ -88,10 +92,16 @@ module.exports = {
           .sort({count: 'desc'})
           .then(function(elems) {return elems;});
 
-        return [count, books, racks, blocks, shelfs];
+        var publishers = Book.find()
+          .groupBy('publishing_house')
+          .sum('count')
+          .sort({count: 'desc'})
+          .then(function(elems) {return elems;});
+
+        return [count, books, racks, blocks, shelfs, publishers];
       })
-      .spread(function(count, books, racks, blocks, shelfs) {
-        var coords = {racks: _.sortBy(racks, 'rack'), blocks: _.sortBy(blocks, 'block'), shelfs: _.sortBy(shelfs, 'shelf')};
+      .spread(function(count, books, racks, blocks, shelfs, publishers) {
+        var coords = {racks: _.sortBy(racks, 'rack'), blocks: _.sortBy(blocks, 'block'), shelfs: _.sortBy(shelfs, 'shelf'), publishers: _.sortBy(publishers, 'publishing_house')};
 
         if (req.user && req.user.id) {
           Admin.isAdmin(req.user.id, function(isAdmin) {
@@ -119,23 +129,30 @@ module.exports = {
   findOne: function(req, res) {
     Book.findOne({id: req.param('id')}).populate('holder')
       .then(function(book) {
-        var url = book.title;
-        if (book.author) {
-          url += '+inauthor:' + book.author;
-        }
-        // TODO:
         if (req.user && req.user.id) {
           Admin.isAdmin(req.user.id, function(isAdmin) {
-            googleBooks.search(url, googleBooksCfg, function(error, results) {
-              if (error) console.log(error);
-
+            if (_.isEmpty(book.isbn) && isAdmin) {
+              var url = book.title;
+              if (book.author) {
+                url += '+inauthor:' + book.author;
+              }
+              googleBooks.search(url, googleBooksCfg, function(error, results) {
+                if (error) console.log(error);
+                return res.view('book/item', {
+                  book: book,
+                  isAuthenticated: true,
+                  isAdmin: isAdmin,
+                  searched: results
+                });
+              });
+            } else {
               return res.view('book/item', {
                 book: book,
                 isAuthenticated: true,
                 isAdmin: isAdmin,
-                searched: results
+                searched: []
               });
-            });
+            }
           });
         } else {
           return res.view('book/item', {

@@ -33,7 +33,8 @@ module.exports = function(_path) {
         },
         {
           test: /\.js$/,
-          loader: 'eslint'
+          loader: 'eslint',
+          exclude: [/node_modules/, /bower_components/, /dependencies/]
         }
       ]
     }
