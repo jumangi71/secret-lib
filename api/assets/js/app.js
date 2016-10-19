@@ -1,7 +1,7 @@
 require('_styles/app.styl');
 
 const moment = require('moment');
-const mdDateTimePicker = require('md-date-time-picker');
+const mdDateTimePicker = require('./mdDateTimePicker.min.js');
 const gator = require('gator');
 
 let addForm = document.querySelector('#addForm');
