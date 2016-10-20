@@ -12,9 +12,18 @@ let isbnAction = document.querySelector('#isbn-action');
 let removeCheck = document.querySelector('#removeCheck');
 let dateInput = document.querySelector('#dateInp');
 let getBookCtrl = document.querySelector('#getBookCtrl');
+let filterRemove = document.querySelectorAll('.filterRemove');
 
 moment.locale('ru');
 
+
+if (filterRemove && filterRemove.length) {
+  gator(document).on('click', '.filterRemove', function() {
+    let inp = document.querySelector('input[name="filter['+this.parentNode.dataset.alias+']"]');
+    inp.remove();
+    this.parentNode.remove();
+  });
+}
 
 if (dateInput) {
   if (getBookCtrl) {

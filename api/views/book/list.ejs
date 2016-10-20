@@ -1,15 +1,22 @@
 
 <form action="/book/" method="get" class="container">
   <div class="mdl-grid">
-    <% _.forEach(_.omit(req.query.filter, 'rack', 'block', 'shelf', 'available', 'publishing_house'), function(el, k) { %>
-      <input type="hidden" name="filter[<%= k %>]" value="<%= el %>">
-    <% }); %>
 
     <div class="mdl-cell mdl-cell--12-col">
       <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="available">
         <input type="checkbox" id="available" name="filter[available]" class="mdl-switch__input" <%= req.query.filter && req.query.filter.available ? 'checked' : '' %>>
         <span class="mdl-switch__label">Доступны в библиотеке</span>
       </label>
+    </div>
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <% _.forEach(_.omit(req.query.filter, 'rack', 'block', 'shelf', 'available', 'publishing_house'), function(el, k) { %>
+        <input type="hidden" name="filter[<%= k %>]" value="<%= el %>">
+        <span class="mdl-chip mdl-chip--deletable" data-alias="<%= k %>">
+          <span class="mdl-chip__text"><%= el %></span>
+          <button type="button" class="mdl-chip__action filterRemove"><i class="material-icons">cancel</i></button>
+        </span>
+      <% }); %>
     </div>
 
     <div class="mdl-cell mdl-cell--3-col">

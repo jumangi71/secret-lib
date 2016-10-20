@@ -1,2 +1,26 @@
 .card-book
   cursor pointer
+  .mdl-card__title-text
+    z-index 2
+    position relative
+    font-size 20px
+
+  .mdl-card__title
+    // background-size cover
+    background-color #c4edff
+    background-repeat no-repeat
+    background-position center
+    background-size contain
+    position relative
+    min-height 225px
+    color #fff
+    &:after
+      content ''
+      position absolute
+      left 0
+      right 0
+      top 0
+      bottom 0
+      background-color rgba(0, 0, 0, .3)
+
+
