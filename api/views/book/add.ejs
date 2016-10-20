@@ -32,7 +32,7 @@
 
               <div class="mdl-selectfield">
                 <select name="rack" id="rack">
-                  <option value="" disabled>Стеллаж</option>
+                  <option value="" disabled selected>Стеллаж</option>
                   <% var racks = ['черный (левый)', 'мал. белый (слева)', 'черный (правый)', 'мал.белый (справа)', 'белый'] %>
                   <% _.forEach(racks, function(rack) { %>
                     <option <%= (!_.isEmpty(data.rack) && data.rack == rack) ? 'selected' : '' %>><%= rack %></option>

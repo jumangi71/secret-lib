@@ -11,7 +11,16 @@
   <% for (var k in booksByDate) {  %>
     <div class="mdl-grid container">
       <div class="mdl-layout-spacer"></div>
-      <h4><%= k %></h4>
+      <h4>
+        <%= k %>
+        <% if (sails.moment(k, 'D.M.YYYY').isBefore(sails.moment())) { %>
+        <i id="overdate" class="icon material-icons mdl-color-text--red">schedule</i>
+        <div class="mdl-tooltip" data-mdl-for="overdate">
+          Просрочено! Пожалуйста, возвращайте книги вовремя!
+        </div>
+
+        <% } %>
+      </h4>
       <div class="mdl-layout-spacer"></div>
     </div>
 

@@ -2,11 +2,26 @@
 @import 'blocks/vars'
 @import 'blocks/global'
 
+@import 'blocks/book'
 
 
-.mdl-layout-title
+
+.mdl-layout__content
+  display -webkit-flex
+  display -ms-flexbox
+  display flex
+  -webkit-flex-flow column nowrap
+  -ms-flex-flow column nowrap
+  flex-flow column nowrap
+
+.mdl-layout__content > *:not(.mdl-layout-spacer)
+  -webkit-flex none
+  -ms-flex none
+  flex none
+
+.mdl-layout__header .mdl-layout-title
   text-decoration none
-  color rgb(66, 66, 66)
+  color rgb(66,66,66)
 
 .page-home .search
   background-image url('~_images/bg.jpg')
@@ -37,17 +52,6 @@
 .mdl-layout__header
   background-color #eae6e9
 
-.mt15
-  margin-top 15px
-
-.mb15
-  margin-bottom 15px
-
-.mt30
-  margin-top 30px
-
-.mb30
-  margin-bottom 30px
 
 .block-relative
   position relative

@@ -15,7 +15,7 @@ module.exports = {
         var grouped = _.groupBy(_.sortBy(books, 'available_date'), 'available_date');
         var gr = [];
         _.forEach(grouped, function(el, k) {
-          var t = moment(k).format('M.D.YYYY');
+          var t = moment(k).format('D.M.YYYY');
           gr[t] = el;
         });
 

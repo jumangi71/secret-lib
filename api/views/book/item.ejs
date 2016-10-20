@@ -48,8 +48,8 @@
         <% if (book.holder) { %>
           <% if (req.user && book.holder.id == req.user.id) { %>
             <form action="./unbooking" method="post">
-              <p>Книга у вас на руках, вы планировали вернуть ее <%= sails.moment(book.available_date).format('D.M.YYYY') %></p>
-              <button type="submit" class="mdl-button mdl-js-button mdl-button--accent">Вернуть сейчас</button>
+              <p>Книга у вас на руках, вы планировали вернуть ее <b><%= sails.moment(book.available_date).format('D.M.YYYY') %></b></p>
+              <button type="submit" class="mdl-button mdl-js-button mdl-button--colored">Вернуть сейчас</button>
             </form>
           <% } else { %>
             <b>На руках у:</b>
@@ -70,7 +70,7 @@
               <input class="mdl-textfield__input" type="text" name="available_date" id="dateInp">
               <label class="mdl-textfield__label" for="dateInp">Дата возврата</label>
             </div>
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--accent" id="getBookCtrl">Взять</button>
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--colored" id="getBookCtrl">Взять</button>
           </form>
         <% } else { %>
             <p><a href="/login">Войдите</a>, чтобы взять книгу</p>
