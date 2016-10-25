@@ -1,16 +1,10 @@
 
 module.exports.email = {
-  host: 'localhost',
-  port: 25,
+  service: 'Gmail',
   auth: {
-    user: 'mailagent',
-    pass: '7531594682'
+    user: 'test',
+    pass: 'test'
   },
   templateDir: 'views/emailTemplates',
-  from: 'info@nakedtube.ru',
-  testMode: false,
-  ssl: false,
-  tls:{
-    rejectUnauthorized: false
-  }
+  testMode: false
 };
