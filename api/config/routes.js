@@ -47,6 +47,9 @@ module.exports.routes = {
   'get /login': 'AuthController.showLogin',
   'post /login': 'AuthController.login',
 
+  'get /registration': 'AuthController.showRegistration',
+  'post /registration': 'AuthController.registration',
+
   '/logout': 'AuthController.logout',
 
   '/search': 'SearchController.search',

@@ -30,6 +30,15 @@ module.exports = {
       collection: 'role',
       via: 'owners',
       dominant: true
+    },
+    password: {
+      type: 'string',
+      minLength: 6
+    },
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.password;
+      return obj;
     }
   }
 };
